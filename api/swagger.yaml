@@ -1,0 +1,113 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Rapid Prototyping Platform
+  description: This is the backend and REST API of RPP web app.
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost
+basePath: /rpp-interface
+schemes:
+  - http
+paths:
+  /devices:
+    get:
+      description: Gets devices data object from ARMmbed connector
+      operationId: getDevices
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/sensorsData'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '503':
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-swagger-router-controller: Default
+  /device-registration:
+    post:
+      description: >-
+        post unique-id to register the device with aws IoT which will be used
+        for sending and receiving data to and from the device. It will play a
+        vital role in device identification and registration mechanism
+      operationId: registerDevice
+      parameters:
+        - in: body
+          name: deviceInfo
+          description: >-
+            register device information object that needs to be stored and
+            authenticated from web server side for future communication with the
+            device
+          required: true
+          schema:
+            $ref: '#/definitions/registrationInfo'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '503':
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-swagger-router-controller: Default
+definitions:
+  registrationInfo:
+    type: object
+    required:
+      - uniqueId
+    properties:
+      uniqueId:
+        type: string
+        description: unique id of the IoT device
+  sensorsData:
+    type: object
+    required:
+      - deviceId
+    properties:
+      deviceId:
+        type: string
+        description: id of the device
+      image:
+        $ref: '#/definitions/device_data'
+  ErrorResponse:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+  device_data:
+    required:
+      - temperature
+      - gravity
+      - timeStamp
+    properties:
+      temperature:
+        type: string
+        description: temperature of the device
+      gravity:
+        type: string
+        description: gravity data of the device
+      timeStamp:
+        type: string
+        description: 'date and Time '
