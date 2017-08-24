@@ -10,16 +10,11 @@ var AWS = require('aws-sdk');
 // Set your region for future requests.
 AWS.config.region = 'us-east-1';
 // Enable logger if required
-// AWS.config.logger = process.stdout;
 
-// Enable the proxy when connected to Deere network
-
-if (process.env.PROXY !== 'false') {
-    AWS.config.update({ httpOptions: { agent: proxy('http://proxy.dpn.deere.com:81') } });
-}
 
 //This was added to reduce the "TimeoutError: Missing credentials in config, message: 'Missing credentials in config'" error that happen randomly.
 AWS.config.update({ httpOptions: { timeout: 10000 } });
+
 
 var ec2 = new AWS.EC2();
 //var s3 = new AWS.S3();

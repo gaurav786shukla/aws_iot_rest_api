@@ -30,17 +30,20 @@ function getDevices(args, res, next) {
 
 This function is will serve the POST -/device-registration requests of the REST API.
 Consumes - application/json
+
 {
 "uniqueId":"unique_Device_Id"	
 }
+
 Produces - application/json
-'Successful' of 'Failure' string.  
+
+'Successful' or 'Failure' string.  
 
 */
 
 function registerDevice(args, res, next) {
   res.end(JSON.stringify('Successful'));
-} 
+}
 
 // function getDevicesData(callback) {
 //   /* Get content from file */
